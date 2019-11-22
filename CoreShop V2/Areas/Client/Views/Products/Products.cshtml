@@ -1,0 +1,131 @@
+﻿@model CoreShop.ViewModels.ProductsViewModel
+
+@{
+    ViewData["Title"] = "Products";
+    ViewData["PageTitle"] = "All Products";
+}
+
+<div class="container">
+    <div class="wrap-breadcrumb">
+        <div class="ordering">
+            <div class="float-left">
+                <span class="col active"></span>
+                <p class="result-count">Showing @Model.PageFrom - @Model.PageTo of @Model.TotalItem.Count() results</p>
+            </div>
+            <div class="float-right">
+                <form asp-controller="products" asp-action="SearchSort" id="sortForm" method="post" class="order-by">
+                    <p>Sort by :</p>                                       
+                    <input asp-for="@Model.searchString" type="hidden" value="@Model.searchString"/>
+                    <select class="orderby" asp-for="@Model.sortOrder" asp-items="@Model.Options" onchange="$('#sortForm').submit();">                          
+                        @*<option>popularity</option>
+                            <option selected="selected">average rating</option>
+                            <option>newness</option>*@                        
+                    </select>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End wrap-breadcrumb -->
+<div class="container">
+    <div class="products ver2 grid_full hover-shadow furniture">
+
+        @foreach (var item in Model.items)
+        {
+            <div class="item-inner">
+                <div class="product">
+                    <div class="product-images">
+                        <a href="#" title="product-images">
+                            <img class="primary_image" src="~/assets/images/items/@item.Image" alt="" />
+                        </a>
+                        <div class="action">
+                            <a class="wish" href="#" title="Wishlist"><i class="icon icon-heart"></i></a>
+                            <a class="zoom" href="#" title="Quick view"><i class="icon icon-magnifier-add "></i></a>
+                            <a class="add-cart" href="#" title="Add to cart"><i class="icon-bag"></i></a>
+                        </div>
+                    </div>
+                    <a href="#" title="Bouble Fabric Blazer"><p class="product-title">@item.ProductName</p></a>
+                    <p class="product-price-old">$@item.DiscountPrice</p>
+                    <p class="product-price">$@item.Price</p>
+
+                </div>
+                <!-- End product -->
+            </div>
+            <!-- End item -->
+        }
+
+    </div>
+    <!-- End product-tab-content products -->
+    <div class="pagination-container">
+        <nav class="pagination align-right">
+            @{
+                var prevDisabled = !Model.items.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.items.HasNextPage ? "disabled" : "";
+            }
+
+            <a asp-controller="products"
+               asp-route-pageNumber="@(Model.items.PageIndex - 1)"
+               class="btn prev page-numbers @prevDisabled">
+                <i class="fa fa-angle-left"></i>
+            </a>
+
+            @*<span class="page-numbers current">1</span>
+        <a class="page-numbers" href="#">2</a>
+        <a class="page-numbers" href="#">3</a>*@
+
+            @for (int i = 1; i <= Model.items.TotalPages; i++)
+            {
+                if (i == Model.items.PageIndex)
+                {
+                    <span class="page-numbers current">@i</span>
+                }
+                else
+                {
+                    <a class="page-numbers" asp-controller="products" asp-action="products" asp-route-pageNumber="@i">@i</a>
+                }
+            }
+
+            <a asp-controller="products"
+               asp-route-pageNumber="@(Model.items.PageIndex + 1)"
+               class="btn next page-numbers @nextDisabled">
+                <i class="fa fa-angle-right"></i>
+            </a>
+
+        </nav>
+    </div>
+    <!-- End pagination-container -->
+</div>
+<!-- end tab product all -->
+<div class="container">
+    <div class="newsletter-bottom center">
+        <div class="items">
+            <img class="img-responsive" src="~/assets/images/newsletter-bottom.jpg" alt="Newsllter">
+            <div class="text">
+                <h3>Sign Up Special Promotions</h3>
+                <p>Get exclusive deals you wont find anywhere else straight to your inbox!</p>
+                <form action="#" method="get" accept-charset="utf-8">
+                    <input type="text" onblur="if (this.value == '') {this.value = 'Enter your email...';}" onfocus="if(this.value != '') {this.value = '';}" value="Enter your email..." class="input-text required-entry validate-email" title="Sign up for our newsletter" id="newsletter" name="email">
+                    <button class="button button1 hover-white" title="Subscribe" type="submit">Join<i class="link-icon-white"></i></button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End newsletter -->
+
+@section Scripts{
+    <script type="text/javascript" src="~/assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/jquery.themepunch.revolution.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/jquery.themepunch.plugins.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/engo-plugins.js"></script>  
+    <script type="text/javascript" src="~/assets/js/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/store.js"></script>   
+    <script type="text/javascript">
+        $('.ordering span').click(function () {
+            window.location.replace("products");
+        });
+    </script>
+}
+

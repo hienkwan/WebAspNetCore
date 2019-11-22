@@ -1,0 +1,54 @@
+﻿@model CoreShop_V2.Areas.Client.ViewModel.ShoppingCartViewModel
+
+@{
+    double total = 0;
+    if (Model.Items.Any())
+    {
+        foreach(var item in Model.Items){
+            Model.TotalQuantity += item.Quantity;
+        }        
+    }
+}
+
+    <div class="cart hover-menu">
+        <p class="icon-cart hidden-desktop" title="Add to cart">
+            <i class="icon"></i>
+            <span class="cart-count">2</span>
+        </p>
+        <div class="icon-cart ver2" title="Add to cart">
+            <i class="icon"></i>
+            <div class="text align-left">
+                <h3>My Cart</h3>
+                <p><span class="items" id="items-Cart"><span id="quantity">@Model.TotalQuantity</span> items</span> - <span class="price"></span></p>
+            </div>
+        </div>
+        <div class="cart-list list-menu">
+            <ul class="list" id="list">
+                @if (Model.Items.Any())
+                {
+                    @foreach (var item in Model.Items)
+                    {
+                        <li>
+                            <a href="#" title="" class="cart-product-image"><img src="~/assets/images/products/1.jpg" alt="Product"></a>
+                            <div class="text">
+                                <p class="product-name">@item.product.ProductName</p>
+                                <p class="product-price"><span class="price-old">$700.00</span><span class="price">@item.product.Price</span></p>
+                                <p class="qty">@item.Quantity</p>
+                            </div>
+                            <a class="close" href="#" title="close"><i class="fa fa-times-circle"></i></a>
+                        </li>
+                        total += item.product.Price * item.Quantity;                        
+                    }
+                }
+
+            </ul>
+            <p class="total"><span class="left">Total:</span> <span class="right">@total</span></p>
+            <div class="bottom">
+                <a class="link-v1" asp-controller="home" asp-action="cart" title="viewcart">View Cart</a>
+                <a class="link-v1 rt" asp-controller="home" asp-action="checkout" title="checkout">Check out</a>
+            </div>
+        </div>
+    </div>
+
+
+

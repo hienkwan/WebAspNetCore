@@ -1,0 +1,123 @@
+﻿@model CoreShop_V2.Areas.Admin.ViewModel.IdentityViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+@section Css{
+    <link href="~/assets/css/login.css" asp-append-version="true" rel="stylesheet" />
+}
+
+<div class="container">
+    <div class="box"></div>
+    <div class="container-forms">
+        <div class="container-info">
+            <div class="info-item">
+                <div class="table">
+                    <div class="table-cell">
+                        <p>
+                            Have an account?
+                        </p>
+                        <div class="btn">
+                            Log in
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="table">
+                    <div class="table-cell">
+                        <p>
+                            Don't have an account?
+                        </p>
+                        <div class="btn" id="signForm">
+                            Sign up
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-form">
+            <div class="form-item log-in">
+                <div class="table">
+                    <form class="table-cell" method="post" asp-controller="Identity" asp-action="Login">                        
+                        <input asp-for="@Model.login.LoginEmail" placeholder="Username" type="text" />
+                        <span asp-validation-for="@Model.login.LoginEmail" class="text-danger"></span>
+                        <input asp-for="@Model.login.LoginPassword" placeholder="Password" type="Password" />
+                        <span asp-validation-for="@Model.login.LoginPassword" class="text-danger"></span>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="@Model.login.RememberMe" />
+                                    @Html.DisplayNameFor(m => m.login.RememberMe)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="btn submit">
+                            Log in
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="form-item sign-up">
+                <div class="table">
+                    <form class="table-cell" method="post" asp-controller="identity" asp-action="signup">
+                        <input asp-for="@Model.signup.CustomerName" placeholder="Full Name" type="text" />
+                        <span asp-validation-for="@Model.signup.CustomerName" class="text-danger"></span>
+                        <input asp-for="@Model.signup.CustomerAddress" placeholder="Adress" type="text" />
+                        <span asp-validation-for="@Model.signup.CustomerAddress" class="text-danger"></span>
+                        <input asp-for="@Model.signup.CustomerEmail" placeholder="Email" type="text" />
+                        <span asp-validation-for="@Model.signup.CustomerEmail" class="text-danger"></span>
+                        <input asp-for="@Model.signup.CustomerPhone" placeholder="Phone" type="text" />
+                        <span asp-validation-for="@Model.signup.CustomerPhone" class="text-danger"></span>
+                        <input asp-for="@Model.signup.Password" placeholder="Password" type="Password" />
+                        <span asp-validation-for="@Model.signup.Password" class="text-danger"></span>
+                        <input asp-for="@Model.signup.ConfirmPassword" placeholder="Confirm Password" type="Password" />
+                        <span asp-validation-for="@Model.signup.ConfirmPassword" class="text-danger"></span>
+                        <div class="btn submit">
+                            Sign up
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $('.submit').click(function () {
+            var submit = $(this);
+            $(submit).parent("form").css("display","none");
+            setTimeout(function () {
+                $(submit).parent("form").submit();
+            }, 1000);
+        })
+
+        $(".info-item .btn").click(function () {
+            $(".container").toggleClass("log-in");
+        });
+        $(".container-form .btn").click(function () {
+            $(".container").addClass("active");
+        });
+    </script>
+    @if (Model.invalid)
+    {
+    <script> 
+        
+    Swal.fire({
+        type: 'error',
+        title: 'Oops...',
+        text: 'Sai thông tin đăng nhập'
+    })
+                
+    </script>
+    }
+    
+    <script>
+        setTimeout(function () {
+            if (window.location.href.indexOf("signup") > -1) {
+                $("#signForm").click();
+            }
+        }, 500)                
+    </script>
+}

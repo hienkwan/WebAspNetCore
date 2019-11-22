@@ -1,0 +1,36 @@
+﻿.add-role{
+    float: right;
+    display: inline-block;
+}
+.card-title{
+    display: inline-block;
+}
+.role-table tr td:nth-child(2), .role-table tr th:nth-child(2) {
+    text-align: center;
+}
+.role-table tr td:first-child, .role-table tr th:first-child {
+    width: 50%;
+}
+.role-table tr td:last-child, .role-table tr th:last-child {
+    width: 40%;
+}
+table.table-striped tr th:last-child{
+    text-align:right;
+}
+.add-user-btn{
+    float: right;
+}
+.modal-header .close{
+    font-size: unset;
+    margin: unset;
+    padding: unset;
+}
+.modal-dialog{
+    top:45%;
+}
+.modal-body .form-group:last-child{
+    margin-bottom: 10px;
+}
+.id-row{
+    display:none;
+}

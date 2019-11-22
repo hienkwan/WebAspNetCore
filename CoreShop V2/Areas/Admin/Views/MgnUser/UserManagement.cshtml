@@ -1,0 +1,314 @@
+﻿@model CoreShop_V2.Areas.Admin.ViewModel.UserManagementViewModel
+
+@{
+    ViewData["Title"] = "UserManagement";
+    ViewData["Section"] = "User Management";
+}
+
+
+<!-- Container fluid  -->
+    <div class="container-fluid">
+        <!-- Start Page Content -->
+        <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-title">
+                        <div class="float-left"><h4>All Role </h4></div>
+                        <div class="float-right">
+                            <form class="input-group add-role-input" asp-action="CreateRole" asp-controller="MgnUser">
+                                <div class="input-group-addon"><i class="ti-world"></i></div>
+                                <input type="text" class="form-control form-type" asp-for="@Model.createRoleViewModel.RoleName" placeholder="Enter new role">
+                                <button class="btn btn-success add-role" type="submit">Add Role</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table role-table">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Quyền hạng</th>
+                                        <th>Mô tả</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var role in Model.identityRole)
+                                    {
+                                        <tr>
+                                            <td><span>@role.Id</span></td>
+                                            @if (role.Name == "admin")
+                                            {
+                                                <td><span class="badge badge-success">@role.Name</span></td>
+                                                <td><span>Toàn quyền</span></td>
+                                            }
+                                            else
+                                            {
+                                                <td><span class="badge badge-warning">@role.Name</span></td>
+                                                <td><span>Chỉ mua sắm</span></td>
+                                            }
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Data Export</h4>
+                        <button type="button" class="btn btn-success btn-rounded add-user-btn" data-toggle="modal" data-target="#AddModal">Thêm thành viên</button>
+                
+                        <div class="table-responsive m-t-40">
+                            <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="id-row">Id</th>
+                                        <th>Họ Tên</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Số ĐT</th>
+                                        <th>User Name</th>
+                                        <th>Email</th>
+                                        <th>Quyền</th>
+                                        <th>Thiết lập</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th class="id-row">Id</th>
+                                        <th>Họ Tên</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Số ĐT</th>
+                                        <th>User Name</th>
+                                        <th>Email</th>
+                                        <th>Quyền</th>
+                                        <th>Thiết lập</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    @{
+                                        int i = 0;
+                                        foreach (var user in Model.users)
+                                        {
+                                                string role = user.Id;
+                                            <tr>
+                                                <td class="id-row">@user.Id</td>
+                                                <td>@user.Fullname</td>
+                                                <td>@user.Address</td>
+                                                <td>@user.PhoneNumber</td>
+                                                <td>@user.UserName</td>
+                                                <td>@user.Email</td>
+                                                <td>@Model.roleUser[i]</td>
+                                                <td>
+                                                    <button class="btn btn-danger btn-rounded delete-btn">Xóa</button>
+                                                    <button class="btn btn-info btn-rounded edit-button" data-toggle="modal" data-target="#EditModal">Sửa</button>
+                                                </td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End PAge Content -->
+        <div id="AddModal" class="modal animated fadeIn" data-easein="fadeIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form asp-action="AddUser" asp-controller="MgnUser" method="post" class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Thêm thành viên</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" asp-for="@Model.signup.CustomerName">Họ tên <span class="text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" asp-for="@Model.signup.CustomerName" placeholder="Nhập vào ..">
+                            </div>
+                            <span asp-validation-for="@Model.signup.CustomerName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" asp-for="@Model.signup.CustomerAddress">Địa chỉ <span class=" text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" asp-for="@Model.signup.CustomerAddress" placeholder=" Nhập vào ..">
+                            </div>
+                            <span asp-validation-for="@Model.signup.CustomerAddress" class="text-danger"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" asp-for="@Model.signup.CustomerPhone">Số ĐT <span class=" text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" asp-for="@Model.signup.CustomerPhone" placeholder=" Nhập vào ..">
+                            </div>
+                            <span asp-validation-for="@Model.signup.CustomerPhone" class="text-danger"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" asp-for="@Model.signup.CustomerEmail">Email và Username <span class=" text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" asp-for="@Model.signup.CustomerEmail" placeholder=" Nhập vào ..">
+                            </div>
+                            <span asp-validation-for="@Model.signup.CustomerEmail" class="text-danger"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" asp-for="@Model.signup.memberRole">Quyền <span class=" text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" asp-for="@Model.signup.memberRole" placeholder=" Nhập vào ..">
+                            </div>
+                            <span asp-validation-for="@Model.signup.memberRole" class="text-danger"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" asp-for="@Model.signup.Password">Password <span class=" text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input type="password" class="form-control" asp-for="@Model.signup.Password" placeholder=" Nhập vào ..">
+                            </div>
+                            <span asp-validation-for="@Model.signup.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label" asp-for="@Model.signup.ConfirmPassword">Confirm Password <span class=" text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input type="password" class="form-control" asp-for="@Model.signup.ConfirmPassword" placeholder=" Nhập vào ..">
+                            </div>
+                            <span asp-validation-for="@Model.signup.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+                        <button class="btn btn-success" type="submit"><i class="fas fa-plus"></i> Xác nhận</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="EditModal" class="modal animated fadeIn" data-easein="fadeIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form class="modal-content" asp-action="EditUser" asp-controller="MgnUser" method="post">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Sửa thông tin</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row" style="display:none">
+                            <label asp-for="@Model.editInfoViewModel.Id" class="col-lg-4 col-form-label">Id <span class="text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input type="text" asp-for="@Model.editInfoViewModel.Id" class="form-control" id="editId" placeholder="Nhập vào ..">
+                                <span asp-validation-for="@Model.editInfoViewModel.Id" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div asp-validation-summary="All"></div>
+                        <div class="form-group row">
+                            <label asp-for="@Model.editInfoViewModel.CustomerName" class="col-lg-4 col-form-label">Họ tên <span class="text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input type="text" asp-for="@Model.editInfoViewModel.CustomerName" class="form-control" id="editName" placeholder="Nhập vào ..">
+                                <span asp-validation-for="@Model.editInfoViewModel.CustomerName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="@Model.editInfoViewModel.CustomerAddress" class="col-lg-4 col-form-label">Địa chỉ <span class="text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input asp-for="@Model.editInfoViewModel.CustomerAddress" type="text" class="form-control" id="editAddress" placeholder="Nhập vào ..">
+                                <span asp-validation-for="@Model.editInfoViewModel.CustomerAddress" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="@Model.editInfoViewModel.CustomerPhone" class="col-lg-4 col-form-label">Số ĐT <span class="text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input asp-for="@Model.editInfoViewModel.CustomerPhone" type="text" class="form-control" id="editPhone" placeholder="Nhập vào ..">
+                                <span asp-validation-for="@Model.editInfoViewModel.CustomerPhone" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="@Model.editInfoViewModel.CustomerEmail" class="col-lg-4 col-form-label">Email và Username <span class="text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input asp-for="@Model.editInfoViewModel.CustomerEmail" type="text" class="form-control" id="editEmail" placeholder="Nhập vào ..">
+                                <span asp-validation-for="@Model.editInfoViewModel.CustomerEmail" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="@Model.editInfoViewModel.memberRole" class="col-lg-4 col-form-label">Quyền <span class="text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input asp-for="@Model.editInfoViewModel.memberRole" type="text" class="form-control" id="editRole" placeholder="Nhập vào ..">
+                                <span asp-validation-for="@Model.editInfoViewModel.memberRole" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="@Model.editInfoViewModel.Password" class="col-lg-4 col-form-label">Password <span class="text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input asp-for="@Model.editInfoViewModel.Password" type="password" class="form-control" id="editPassword" placeholder="Nhập vào ..">
+                                <span asp-validation-for="@Model.editInfoViewModel.Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="@Model.editInfoViewModel.ConfirmPassword" class="col-lg-4 col-form-label">Confirm Password <span class="text-danger">*</span></label>
+                            <div class="col-lg-8">
+                                <input asp-for="@Model.editInfoViewModel.ConfirmPassword" type="password" class="form-control" id="editConfirm" placeholder="Nhập vào ..">
+                                <span asp-validation-for="@Model.editInfoViewModel.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+                        <button type="submit" class="btn btn-info confirm-edit"><i class="fas fa-user-edit"></i> Xác nhận</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
+<!-- End Container fluid  -->
+
+@section Scripts{
+    <script src="~/assets1/js/lib/datatables/datatables.min.js"></script>
+    <script src="~/assets1/js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets1/js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+    <script src="~/assets1/js/lib/datatables/cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="~/assets1/js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="~/assets1/js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="~/assets1/js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script src="~/assets1/js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+    <script src="~/assets1/js/lib/datatables/datatables-init.js"></script>
+
+    <script>
+        $('.edit-button').click(function () {   
+            var thisRow = $(this).parents().eq(1);
+            $('#editId').val($(thisRow).find("td:nth-child(1)").text())
+            $('#editName').val($(thisRow).find("td:nth-child(2)").text())
+            $('#editAddress').val($(thisRow).find("td:nth-child(3)").text())
+            $('#editPhone').val($(thisRow).find("td:nth-child(4)").text())
+            $('#editEmail').val($(thisRow).find("td:nth-child(6)").text())
+            $('#editRole').val($(thisRow).find("td:nth-child(7)").text())            
+        })
+        $('.delete-btn').click(function () {
+            Swal.fire({
+                type: 'question',
+                text: 'Are you sure you want to delete this user ?'
+            })     
+            $('.swal2-confirm.swal2-styled').click(function () {
+                var thisRow = $('.delete-btn').parents().eq(1);
+                var id = $(thisRow).find("td:nth-child(1)").text();
+                $.ajax({
+                    url: "/DeleteUser",
+                    type: "POST",
+                    data: { id: id },
+                    success: function (result) {
+                        $(thisRow).empty();
+                    }
+                });
+            })
+        })
+       
+        
+    </script>
+}
+

@@ -1,0 +1,223 @@
+﻿
+@{
+    ViewData["Title"] = "Cart";
+    ViewData["PageTitle"] = "Cart";
+}
+
+<div class="main-content">
+    <div class="cart-box-container">
+        <div class="container container-ver2 space-padding-tb-30">
+            <div class="row head-cart">
+                <div class="col-md-4 space-30">
+                    <div class="item active center">
+                        <p class="icon">01</p>
+                        <h3>Shopping cart</h3>
+                    </div>
+                </div>
+                <!-- End col-md-4 -->
+                <div class="col-md-4 space-30">
+                    <div class="item center">
+                        <p class="icon">02</p>
+                        <h3>Check out</h3>
+                    </div>
+                </div>
+                <!-- End col-md-4 -->
+                <div class="col-md-4 space-30">
+                    <div class="item center">
+                        <p class="icon">03</p>
+                        <h3>Order completed</h3>
+                    </div>
+                </div>
+                <!-- End col-md-4 -->
+            </div>
+        </div>
+        <!-- End container -->
+        <div class="container container-ver2">
+            <div class="box cart-container">
+                <table class="table cart-table space-80">
+                    <thead>
+                        <tr>
+                            <th class="product-photo">Product Name</th>
+                            <th class="produc-name"></th>
+                            <th class="produc-price">Price</th>
+                            <th class="product-quantity">Quantity</th>
+                            <th class="total-price">Total</th>
+                            <th class="product-remove"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="body">
+                        @if (ViewBag.Cart == null)
+                        {
+
+                        }
+                        else
+                        {                    
+                            @foreach (var item in ViewBag.Cart)
+                            {
+                                <tr class="row-id-@ViewBag.index count item_cart-@item.product.ProductId" product-id="@item.product.ProductId">
+                                    <td class="product-photo"><img src="~/assets/images/products/1.jpg" alt="Futurelife"></td>
+                                    <td class="produc-name "><a href="#" title="">@item.product.ProductName</a></td>
+                                    <td class="produc-price"><input value="$@String.Format("{0:#.00}",item.product.Price/100)" size="5" type="text"></td>
+                                    <td class="product-quantity">
+                                        <form enctype="multipart/form-data">
+                                            <div class="product-signle-options product_15 clearfix">
+                                                <div class="selector-wrapper size">
+                                                    <div class="quantity quantity-@item.product.ProductId">
+                                                        <input data-step="1" value="@item.Quantity" asp-controller="ShoppingCart" asp-action="UpdateCart" asp-route-id="@item.product.ProductId" title="Qty" class="qty" size="4" type="text">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </td>
+                                    <td class="total-price">@String.Format("{0:#.00}",item.TotalPrice/100)</td>
+                                    <td class="product-remove"><a class="remove" data-product_id="@item.product.ProductId" title="close"><img src="~/assets/images/icon-delete-cart.png" alt="close"></a></td>
+                                </tr>
+                                ViewBag.index++;
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="box space-30">
+                    <div class="float-left">
+                        <button class="link-v1 lh-50 margin-right-20 space-20 removeCart" title="CLEAR SHOPPING CART">CLEAR SHOPPING CART</button>
+                        <button class="link-v1 lh-50 space-20 UpdateCart" title="UPDATE SHOPPING CART">UPDATE SHOPPING CART</button>
+                    </div>
+                    <!-- End float left -->
+                    <div class="float-right">
+                        <a class="link-v1 lh-50" asp-controller="Home" asp-action="Index" title="CONTINUS SHOPPING">CONTINUS SHOPPING</a>
+                    </div>
+                    <!-- End float-right -->
+                </div>
+                <!-- End box -->
+                <div class="box cart-total space-30">
+                    <div class="row">
+                        <div class="col-md-4 space-30">
+                            <div class="item coupon-code">
+                                <h3 class="title">COUPON CODE</h3>
+                                <p>Enter your coupon code if you have one</p>
+                                <form enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control space-20" id="coundpon">
+                                    </div>
+                                </form>
+                                <a class="link-v1 lh-50 rt" href="#" title="apply coupon">APPLY COUPON*</a>
+                            </div>
+                        </div>                        
+                        <div class="col-md-4 space-30">
+                            <div class="item">
+                                <h3 class="title">CART TOTAL</h3>
+                                <p class="box"><span class="float-left">SHIPPING</span><span class="float-right">$52.00</span></p>
+                                <p class="box space-30"><span class="float-left">SUBTOTAL</span><span class="float-right">$5,200.00</span></p>
+                                <a class="link-v1 lh-50 rt" href="#" title="POCEEED TO CHECKOUT">PROCEED TO CHECKOUT</a>
+                            </div>
+                        </div>
+                        <!-- End col-md-4 -->
+                    </div>
+                </div>
+                <!-- End box -->
+            </div>
+            <!-- End container -->
+        </div>
+        <!-- End cat-box-container -->
+    </div>
+    <div class="container">
+        <div class="newsletter-bottom center">
+            <div class="items">
+                <img class="img-responsive" src="~/assets/images/newsletter-bottom.jpg" alt="Newsllter">
+                <div class="text">
+                    <h3>Sign Up Special Promotions</h3>
+                    <p>Get exclusive deals you wont find anywhere else straight to your inbox!</p>
+                    <form action="#" method="get" accept-charset="utf-8">
+                        <input type="text" onblur="if (this.value == '') {this.value = 'Enter your email...';}" onfocus="if(this.value != '') {this.value = '';}" value="Enter your email..." class="input-text required-entry validate-email" title="Sign up for our newsletter" id="newsletter" name="email">
+                        <button class="button button1 hover-white" title="Subscribe" type="submit">Join<i class="link-icon-white"></i></button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- End newsletter -->
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="~/assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/jquery.themepunch.revolution.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/jquery.themepunch.plugins.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/engo-plugins.js"></script>
+    <script type="text/javascript" src="~/assets/js/store.js"></script>
+    <script>
+
+        $('.remove').click(function () {
+            var id = $(this).attr('data-product_id');
+            var thisRe = $(this);
+            $.ajax({
+                url: "@Url.Action("Remove","Calculation",new { Area = "Client"})",
+                type: "POST",
+                data: { id: id },
+                success: function (result) {                    
+                    $(thisRe).parents().eq("1").empty();
+                    $("#box-right").load(location.href + " #box-right");
+                }
+            });
+        });
+        $('.removeCart').click(function () {
+            var count = $("#body tr").length;
+            var arrayId = [];
+            for (var i = 1; i <= count; i++) {
+                var thisRow = $('.row-id-'+i);
+
+                arrayId[i-1] =  $(thisRow).attr('product-id');             
+            }
+            $.ajax({
+                url: "/RemoveAll",
+                type: "POST",
+                data: {
+                    arrayId: arrayId
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                }
+            });
+            
+        })
+        $('.UpdateCart').click(function () {
+            var data = [];
+            var count = $("#body tr").length;
+            for (var i = 1; i <= count; i++) {
+                var thisRow = $('.row-id-'+i);
+
+                var id =  $(thisRow).attr('product-id');
+                var Quantity = $(thisRow).find(".qty").val();
+                var obj = {
+                    id: id,
+                    Quantity: Quantity,
+                }
+                data.push(obj);
+                
+                var dulieu = JSON.stringify(data);
+                
+            }
+            console.log(dulieu);
+            $.ajax({
+                    url: "/UpdateCart",
+                    type: "POST",
+                    data: {
+                        data: dulieu,
+                        
+                    },
+                    dataType: "json",
+                    success: function (result) {   
+                        console.log(result);
+                        //location.reload();
+                    }
+
+                });
+            $("#box-right").load(location.href + " #box-right");
+            
+        });
+    </script>
+}
+
+
